@@ -4,6 +4,10 @@ import { RouterProvider } from "react-router-dom";
 import { appRoutersConfig } from "./lib/config/RouteConfig/RouteConfig";
 import { Suspense } from "react";
 import Loader from "./components/shared/Loader/Loader";
+import { ChatBot } from "./pages/Chat/Chat";
+import { Dialog, DialogContent } from "./components/ui/dialog";
+import { DialogTrigger } from "@radix-ui/react-dialog";
+import { Button } from "./components/ui/button";
 
 function App() {
   if (typeof requestIdleCallback !== "function") {
@@ -26,16 +30,25 @@ function App() {
   }
 
   return (
-    <Suspense
-      fallback={
-        <div className="w-screen h-screen flex justify-center items-center">
-          <Loader />
-        </div>
-      }
-    >
-      <ToastContainer />
-      <RouterProvider router={appRoutersConfig} />
-    </Suspense>
+    <Dialog>
+      <DialogTrigger>
+        <Button className="absolute z-[1000] ">ОТКРЫТЬ ЧАТ</Button>
+      </DialogTrigger>
+      <DialogContent className="f-full w-full">
+        <ChatBot />
+      </DialogContent>
+    </Dialog>
+
+    // <Suspense
+    //   fallback={
+    //     <div className="w-screen h-screen flex justify-center items-center">
+    //       <Loader />
+    //     </div>
+    //   }
+    // >
+    //   <ToastContainer />
+    //   <RouterProvider router={appRoutersConfig} />
+    // </Suspense>
   );
 }
 
