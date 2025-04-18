@@ -13,7 +13,7 @@ import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { uiActions, uiSelectors } from "@/store/ui";
 import { useSelector } from "react-redux";
 import { Avatar, AvatarFallback } from "@radix-ui/react-avatar";
-import { X } from "lucide-react";
+import { MessageCirclePlusIcon, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cx } from "class-variance-authority";
 
@@ -54,6 +54,18 @@ export function AppSidebar({ items }: { items: Chat[] }) {
           <SidebarGroupLabel>Чаты</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
+              <Button
+                className={cx(
+                  "cursor-pointer bg-[#e9e9e9] text-black border-primary border-2 hover:text-white"
+                )}
+                onClick={() => dispatch(uiActions.setChatOpened(null))}
+                asChild
+              >
+                <span>
+                  <MessageCirclePlusIcon />
+                  <p>Новый чат</p>
+                </span>
+              </Button>
               {items.map((item) => (
                 <SidebarMenuItem key={item.id}>
                   <SidebarMenuButton
