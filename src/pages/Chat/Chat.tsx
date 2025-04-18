@@ -114,26 +114,25 @@ export function ChatBot(props: ChatDemoProps) {
             </SelectContent>
           </Select>
         </div>
-
-        <Chat
-          className="grow"
-          messages={messages}
-          handleSubmit={handleSubmit}
-          input={input}
-          handleInputChange={handleInputChange}
-          isGenerating={isLoading}
-          stop={stop}
-          append={append}
-          setMessages={setMessages}
-          transcribeAudio={transcribeAudio}
-          suggestions={[
-            t("suggestion1"),
-            t("suggestion2"),
-            t("suggestion3"),
-            t("suggestion4"),
-          ]}
-        />
       </div>
+      <Chat
+        className="grow"
+        messages={messages}
+        handleSubmit={handleSubmit}
+        input={input}
+        handleInputChange={handleInputChange}
+        isGenerating={isLoading}
+        stop={stop}
+        append={append}
+        setMessages={setMessages}
+        transcribeAudio={transcribeAudio}
+        suggestions={[
+          t("suggestion1"),
+          t("suggestion2"),
+          t("suggestion3"),
+          t("suggestion4"),
+        ]}
+      />
     </div>
   );
 }
