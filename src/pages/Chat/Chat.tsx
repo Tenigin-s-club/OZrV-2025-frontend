@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useChat, type UseChatOptions } from "@ai-sdk/react";
 
 import { cn } from "@/lib/utils";
-// import { transcribeAudio } from "@/lib/utils/audio";
+
 import { Chat } from "@/components/ui/chat";
 import {
   Select,
@@ -11,6 +11,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { recordAudio } from "@/lib/audio-utils";
+import { transcribeAudio } from "@/lib/transcribeAudio";
 
 const MODELS = [
   { id: "en", name: "English" },
@@ -83,7 +85,7 @@ export function ChatBot(props: ChatDemoProps) {
         stop={stop}
         append={append}
         setMessages={setMessages}
-        // transcribeAudio={transcribeAudio}
+        transcribeAudio={transcribeAudio}
         suggestions={[
           "Привет, я хочу написать обращение",
           "Хочу сообщить о проблеме",
