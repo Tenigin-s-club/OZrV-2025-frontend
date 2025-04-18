@@ -22,6 +22,7 @@ export type UIState = {
   requests: Record<string, RequestState>;
   messages: Message[];
   modalOpened: ModalOpened;
+  chatOpened: string | null;
 };
 
 export type StoreWithUIState = {

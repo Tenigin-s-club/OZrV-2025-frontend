@@ -18,6 +18,9 @@ export const getMessages = (s: StoreWithUIState): Message[] =>
 export const getModalOpened = (s: StoreWithUIState): ModalOpened =>
   getState(s).modalOpened;
 
+export const getChatOpened = (s: StoreWithUIState): string | null =>
+  getState(s).chatOpened;
+
 export const getRequests = (
   s: StoreWithUIState
 ): Record<string, RequestState> => getState(s).requests;

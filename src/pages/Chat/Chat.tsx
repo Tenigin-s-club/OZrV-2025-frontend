@@ -17,6 +17,10 @@ import { uiActions, uiSelectors } from "@/store/ui";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { X } from "lucide-react";
 import { transcribeAudio } from "@/lib/transcribeAudio";
+import { SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider } from "../../components/ui/sidebar";
+import { AppSidebar } from "../../modules/AppSidebar/AppSidebar";
+import { Chat as ChatType } from "@/types";
 
 const LANGUAGES = [
   { id: "en", name: "English" },
@@ -34,6 +38,19 @@ const LANGUAGES = [
 type ChatDemoProps = {
   initialMessages?: UseChatOptions["initialMessages"];
 };
+
+const chats: ChatType[] = [
+  {
+    id: "123-ased-q23-23-wa",
+    name: "test chat 1",
+    createdAt: "2025-04-18T21:55:03Z",
+  },
+  {
+    id: "123-a-fasdq3-4--wa",
+    name: "test chat 2",
+    createdAt: "2025-04-16T21:55:03Z",
+  },
+];
 
 export function ChatBot(props: ChatDemoProps) {
   const [selectedModel, setSelectedModel] = useState(LANGUAGES[0].id);
@@ -56,7 +73,8 @@ export function ChatBot(props: ChatDemoProps) {
     },
   });
 
-  const user = useSelector(uiSelectors.getUser);
+  const currentChatId = useSelector(uiSelectors.getChatOpened);
+
   const changeLanguage = (lng: string) => {
     console.log(lng);
     setSelectedModel(lng);
@@ -64,75 +82,58 @@ export function ChatBot(props: ChatDemoProps) {
   };
 
   return (
-    <div
-      className={cn(
-        "flex justify-between absolute z-[1000] bg-white p-8 text-[20px]",
-        "flex-col",
-        "h-full",
-        "w-[60%] max-lg:w-[80%] max-md:w-[100%]"
-      )}
+    <SidebarProvider
+      style={{
+        // @ts-ignore
+        "--sidebar-width": "20rem",
+        "--sidebar-width-mobile": "20rem",
+      }}
     >
-      <div className={cn("flex", "justify-between", "mb-2", "w-full")}>
-        {!user && (
-          <Button onClick={() => dispatch(uiActions.setModalOpened("login"))}>
-            Войти
-          </Button>
+      <AppSidebar items={chats} />
+      <div
+        className={cn(
+          "flex justify-between m-auto relative z-[1000] bg-white p-8 text-[20px]",
+          "flex-col",
+          "h-full",
+          "w-[60%] max-lg:w-[80%] max-md:w-[100%]"
         )}
-        {user && (
-          <div className="flex gap-3 items-center">
-            <Avatar>
-              <AvatarFallback>
-                {user.fio.split(" ")[0][0].toLocaleUpperCase()}
-                {user.fio.split(" ")[1][0].toLocaleUpperCase()}
-              </AvatarFallback>
-            </Avatar>
-            <div>
-              <p className="text-[#777] text-sm max-w-60 text-ellipsis overflow-hidden line-clamp-1">
-                Name: {user.fio}
-              </p>
-              <p className="text-[#777] text-sm max-w-60 text-ellipsis overflow-hidden line-clamp-1">
-                Email: {user.email}
-              </p>
-            </div>
-            <Button className="rounded-full size-10">
-              <X />
-            </Button>
+      >
+        <div className={cn("flex", "justify-between", "mb-2", "w-full")}>
+          <SidebarTrigger />
+          <div className={cn("flex", "justify-end", "mb-2")}>
+            <Select value={selectedModel} onValueChange={changeLanguage}>
+              <SelectTrigger className="w-fit">
+                <SelectValue placeholder="Select Model" />
+              </SelectTrigger>
+              <SelectContent className="top-4">
+                {LANGUAGES.map((model) => (
+                  <SelectItem key={model.id} value={model.id}>
+                    {model.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
-        )}
-
-        <div className={cn("flex", "justify-end", "mb-2")}>
-          <Select value={selectedModel} onValueChange={changeLanguage}>
-            <SelectTrigger className="w-fit">
-              <SelectValue placeholder="Select Model" />
-            </SelectTrigger>
-            <SelectContent className="top-4">
-              {LANGUAGES.map((model) => (
-                <SelectItem key={model.id} value={model.id}>
-                  {model.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
         </div>
+        <Chat
+          className="grow"
+          messages={messages}
+          handleSubmit={handleSubmit}
+          input={input}
+          handleInputChange={handleInputChange}
+          isGenerating={isLoading}
+          stop={stop}
+          append={append}
+          setMessages={setMessages}
+          transcribeAudio={transcribeAudio}
+          suggestions={[
+            t("suggestion1"),
+            t("suggestion2"),
+            t("suggestion3"),
+            t("suggestion4"),
+          ]}
+        />
       </div>
-      <Chat
-        className="grow"
-        messages={messages}
-        handleSubmit={handleSubmit}
-        input={input}
-        handleInputChange={handleInputChange}
-        isGenerating={isLoading}
-        stop={stop}
-        append={append}
-        setMessages={setMessages}
-        transcribeAudio={transcribeAudio}
-        suggestions={[
-          t("suggestion1"),
-          t("suggestion2"),
-          t("suggestion3"),
-          t("suggestion4"),
-        ]}
-      />
-    </div>
+    </SidebarProvider>
   );
 }
