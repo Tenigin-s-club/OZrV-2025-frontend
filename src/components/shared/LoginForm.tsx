@@ -15,7 +15,7 @@ import { Button } from "../ui/button";
 import { useNavigate } from "react-router-dom";
 import Title from "../ui/title";
 import { showErrorNotification } from "@/lib/helpers/notification";
-import { useLogin } from "@/services/AuthByEmail/AuthByEmail";
+import { requestLogin } from "@/api/user/user";
 
 const formSchema = z.object({
   email: z.string().email({ message: "incorrect email" }),
@@ -26,7 +26,7 @@ const formSchema = z.object({
 
 const LoginForm = () => {
   const navigate = useNavigate();
-  const [login] = useLogin();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -36,12 +36,12 @@ const LoginForm = () => {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    login({ email: values.email, password: values.password })
-      .unwrap()
-      .then(() => navigate("/"))
-      .catch(() =>
-        showErrorNotification("Не удалось войти в аккаунт, попробуйте еще раз.")
-      );
+    try {
+      await requestLogin(values.email, values.password);
+      navigate("/");
+    } catch {
+      showErrorNotification("Не удалось войти в аккаунт, попробуйте еще раз.");
+    }
   }
   return (
     <div className="w-96 rounded-lg border bg-card text-card-foreground shadow-sm flex flex-col space-y-1.5 p-6">

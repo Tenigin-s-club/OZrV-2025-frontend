@@ -17,12 +17,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select";
-import { useConfirmEmployee } from "@/services/Employees/Employees";
+import { useConfirmEmployee } from "@/api/Employees/Employees";
 import {
   EmployeeRole,
   UnVerifiedUser,
   VerifiedUser,
-} from "@/services/Employees/types";
+} from "@/api/Employees/types";
 import {
   Form,
   FormControl,

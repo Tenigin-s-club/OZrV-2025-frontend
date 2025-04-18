@@ -1,4 +1,4 @@
-import { Meeting, MeetingStatus } from "@/services/Meetings/types";
+import { Meeting, MeetingStatus } from "@/api/Meetings/types";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Button } from "../ui/button";
 import { format } from "date-fns";

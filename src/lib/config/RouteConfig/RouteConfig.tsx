@@ -1,18 +1,10 @@
 import Layout from "@/components/shared/layout";
 
 import { createBrowserRouter, RouteObject } from "react-router-dom";
-import AuthPageAsync from "@/pages/AuthPage/AuthPage.async";
-import ErrorPage from "@/pages/ErrorPage/ErrorPage";
-import RegisterPageAsync from "@/pages/RegisterPage/RegisterPage.async";
-import { ProtectedRoute } from "@/components/shared/ProtectedRoute";
-import EmployeesTableAdminPageAsync from "@/pages/EmployeesTablePage/EmployeesTablePage.async";
-import MeetingsAdminPageAsync from "@/pages/MeetingsAdminPage/MeetingsAdminPage.async";
-import CreateMeetingPageAsync from "@/pages/CreateMeetingPage/CreateMeetingPage.async";
-import EmployeePageAsync from "@/pages/EmployeePage/EmployeePage.async";
-import VksPage from "@/pages/VKS/VksPage";
-import MeetingsStatisticPageAsync from "@/pages/MeetingStatisticPage/MeetingStatisticPage.async";
-import QuestionPageAsync from "@/pages/QuestionPage/QuestionPage.async";
-import MeetingPageAsync from "@/pages/MeetingPage/MeetingPage.async";
+import AuthPageAsync from "@/modules/AuthPage/AuthPage.async";
+import ErrorPage from "@/modules/ErrorPage/ErrorPage";
+import RegisterPageAsync from "@/modules/RegisterPage/RegisterPage.async";
+import MainPage from "@/modules/MainPage/MainPage";
 
 const authRoutes: RouteObject[] = [
   {
@@ -29,48 +21,12 @@ export const appRoutersConfig = createBrowserRouter([
   ...authRoutes,
   {
     path: "/",
-    element: (
-      <ProtectedRoute>
-        <Layout />
-      </ProtectedRoute>
-    ),
+    element: <Layout />,
     errorElement: <ErrorPage />,
     children: [
       {
         path: "/",
-        element: <MeetingsAdminPageAsync />,
-      },
-      {
-        path: "/employees",
-        element: <EmployeesTableAdminPageAsync />,
-      },
-      {
-        path: "/employees/:id",
-        element: <EmployeePageAsync />,
-      },
-      {
-        path: "/meetings",
-        element: <MeetingsAdminPageAsync />,
-      },
-      {
-        path: "/meetings/create",
-        element: <CreateMeetingPageAsync />,
-      },
-      {
-        path: "/meeting/:id",
-        element: <MeetingPageAsync />,
-      },
-      {
-        path: "/question/:id",
-        element: <QuestionPageAsync />,
-      },
-      {
-        path: "/meetingstatistic/:id",
-        element: <MeetingsStatisticPageAsync />,
-      },
-      {
-        path: "/vks",
-        element: <VksPage />,
+        element: <MainPage />,
       },
     ],
   },
