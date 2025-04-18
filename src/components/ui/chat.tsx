@@ -16,6 +16,7 @@ import { MessageInput } from "@/components/ui/message-input";
 import { MessageList } from "@/components/ui/message-list";
 import { PromptSuggestions } from "@/components/ui/prompt-suggestions";
 import { useTranslation } from "react-i18next";
+import { ScrollArea } from "./scroll-area";
 
 interface ChatPropsBase {
   handleSubmit: (
@@ -255,9 +256,11 @@ export function ChatMessages({
       onScroll={handleScroll}
       onTouchStart={handleTouchStart}
     >
-      <div className="max-w-full [grid-column:1/1] [grid-row:1/1]">
-        {children}
-      </div>
+      <ScrollArea className="h-[70vh] rounded-md">
+        <div className="max-w-full [grid-column:1/1] [grid-row:1/1] pr-6">
+          {children}
+        </div>
+      </ScrollArea>
 
       {!shouldAutoScroll && (
         <div className="pointer-events-none flex flex-1 items-end justify-end [grid-column:1/1] [grid-row:1/1]">
