@@ -5,4 +5,5 @@ export const uiInitialState: UIState = {
   requests: {},
   messages: [],
   modalOpened: null,
+  chatOpened: null,
 };

@@ -25,6 +25,12 @@ const uiSlice = createSlice({
     setModalOpened(state, { payload }: PayloadAction<ModalOpened>) {
       state.modalOpened = payload;
     },
+    setChatOpened(state, { payload }: PayloadAction<string | null>) {
+      state.chatOpened = payload;
+    },
+    setNewChat(state) {
+      state.chatOpened = null;
+    },
     closeModal(state) {
       state.modalOpened = null;
     },

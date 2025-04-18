@@ -18,7 +18,7 @@ import {
   showInfoNotification,
   showSuccessNotification,
 } from "@/lib/helpers/notification";
-import { requestLogin, requestRegister } from "@/api/user/user";
+import { requestRegister } from "@/api/user/user";
 import { useDispatch } from "react-redux";
 import { uiActions } from "@/store/ui";
 import { fetchUser } from "@/store/ui/thunks";
