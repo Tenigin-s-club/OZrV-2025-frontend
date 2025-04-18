@@ -73,7 +73,8 @@ export function ChatBot(props: ChatDemoProps) {
     },
   });
 
-  const user = useSelector(uiSelectors.getUser);
+  const currentChatId = useSelector(uiSelectors.getChatOpened);
+
   const changeLanguage = (lng: string) => {
     console.log(lng);
     setSelectedModel(lng);
@@ -98,38 +99,7 @@ export function ChatBot(props: ChatDemoProps) {
         )}
       >
         <div className={cn("flex", "justify-between", "mb-2", "w-full")}>
-          <div className="flex gap-2 items-center">
-            <SidebarTrigger />
-            {!user && (
-              <Button
-                onClick={() => dispatch(uiActions.setModalOpened("login"))}
-              >
-                Войти
-              </Button>
-            )}
-            {user && (
-              <div className="flex gap-3 items-center">
-                <Avatar>
-                  <AvatarFallback>
-                    {user.fio.split(" ")[0][0].toLocaleUpperCase()}
-                    {user.fio.split(" ")[1][0].toLocaleUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
-                <div>
-                  <p className="text-[#777] text-sm max-w-60 text-ellipsis overflow-hidden line-clamp-1">
-                    Name: {user.fio}
-                  </p>
-                  <p className="text-[#777] text-sm max-w-60 text-ellipsis overflow-hidden line-clamp-1">
-                    Email: {user.email}
-                  </p>
-                </div>
-                <Button className="rounded-full size-10">
-                  <X />
-                </Button>
-              </div>
-            )}
-          </div>
-
+          <SidebarTrigger />
           <div className={cn("flex", "justify-end", "mb-2")}>
             <Select value={selectedModel} onValueChange={changeLanguage}>
               <SelectTrigger className="w-fit">

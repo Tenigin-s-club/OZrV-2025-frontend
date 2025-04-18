@@ -65,7 +65,6 @@ export function Chat({
   const lastMessage = messages.at(-1);
   const isEmpty = messages.length === 0;
   const isTyping = lastMessage?.role === "user";
-
   const messagesRef = useRef(messages);
   messagesRef.current = messages;
 
