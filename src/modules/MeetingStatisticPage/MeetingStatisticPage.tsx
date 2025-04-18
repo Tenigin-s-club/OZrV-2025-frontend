@@ -1,4 +1,4 @@
-import { useGetMeetingStatistic } from "@/services/Meetings/Meetings";
+import { useGetMeetingStatistic } from "@/api/Meetings/Meetings";
 import { useParams } from "react-router-dom";
 
 const MeetingStatisticPage = () => {

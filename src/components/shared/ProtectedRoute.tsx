@@ -1,30 +1,19 @@
 import { FC, PropsWithChildren } from "react";
-import { useNavigate } from "react-router-dom";
-import Loader from "./Loader/Loader";
-import Container from "../ui/container";
 import { useEffectOnce } from "@/hooks/useEffectOnce";
-import { useGetMe } from "@/services/AuthByEmail/AuthByEmail";
 import { showErrorNotification } from "@/lib/helpers/notification";
+import { requestMe } from "@/api/user/user";
 
 export const ProtectedRoute: FC<PropsWithChildren> = ({ children }) => {
-  const { data, isLoading } = useGetMe();
-
-  const navigate = useNavigate();
-
   useEffectOnce(() => {
-    if (!isLoading && !data) {
-      showErrorNotification("Не удалось получить информацию о пользователе.");
-      navigate("/login");
-    }
-  });
+    (async () => {
+      const data = await requestMe();
 
-  if (isLoading) {
-    return (
-      <Container className="w-full h-[100vh] flex items-center justify-center">
-        <Loader />
-      </Container>
-    );
-  }
+      if (!data) {
+        showErrorNotification("Не удалось получить информацию о пользователе.");
+        // navigate("/login");
+      }
+    })();
+  });
 
   return children;
 };

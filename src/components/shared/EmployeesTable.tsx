@@ -22,11 +22,11 @@ import { Input } from "@/components/ui/input";
 
 import ExportEmployeesButton from "./ExportEmployeesButton";
 
-import { useDeleteEmployee } from "@/services/Employees/Employees";
+import { useDeleteEmployee } from "@/api/Employees/Employees";
 import { ChartColumnBig, Check, Trash2, X } from "lucide-react";
 import { useSelector } from "react-redux";
-import { UnVerifiedUser, VerifiedUser } from "@/services/Employees/types";
-import { User } from "@/services/User/types";
+import { UnVerifiedUser, VerifiedUser } from "@/api/Employees/types";
+import { User } from "@/api/user/types";
 import { ConfirmEmployeeDialog } from "./ConfirmEmployeeDialog";
 
 interface Props<TValue> {

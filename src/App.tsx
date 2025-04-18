@@ -10,25 +10,6 @@ import { DialogTrigger } from "@radix-ui/react-dialog";
 import { Button } from "./components/ui/button";
 
 function App() {
-  if (typeof requestIdleCallback !== "function") {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    window.requestIdleCallback = function (callback) {
-      return setTimeout(function () {
-        callback({
-          didTimeout: false,
-          timeRemaining: function () {
-            return 50;
-          },
-        });
-      }, 1);
-    };
-
-    window.cancelIdleCallback = function (id) {
-      clearTimeout(id);
-    };
-  }
-
   return (
     <Dialog>
       <DialogTrigger>

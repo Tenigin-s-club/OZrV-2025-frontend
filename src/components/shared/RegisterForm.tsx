@@ -14,11 +14,8 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useNavigate } from "react-router-dom";
 import Title from "../ui/title";
-import {
-  showErrorNotification,
-  showSuccessNotification,
-} from "@/lib/helpers/notification";
-import { useRegister } from "@/services/AuthByEmail/AuthByEmail";
+import { showErrorNotification } from "@/lib/helpers/notification";
+import { requestRegister } from "@/api/user/user";
 
 const formSchema = z.object({
   email: z.string().email({ message: "incorrect email" }),
@@ -36,7 +33,6 @@ const formSchema = z.object({
 
 const RegisterForm = () => {
   const navigate = useNavigate();
-  const [register] = useRegister();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -53,17 +49,10 @@ const RegisterForm = () => {
     password,
   }: z.infer<typeof formSchema>) {
     try {
-      await register({
-        fio: `${lastname || ""} ${name || ""} ${middlename || ""}`.trim(),
-        email: email,
-        password: password,
-      });
-      navigate("/login");
-      showSuccessNotification("Ваш аккаунт отправлен на проверку.");
+      await requestRegister(name, lastname, middlename, email, password);
+      navigate("/");
     } catch {
-      showErrorNotification(
-        "Не удалось зарегистрироваться, попробуйте еще раз."
-      );
+      showErrorNotification("Не удалось войти в аккаунт, попробуйте еще раз.");
     }
   }
   return (

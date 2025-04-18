@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   useGetUnVerEmployees,
   useGetVerifiedEmployees,
-} from "@/services/Employees/Employees";
+} from "@/api/Employees/Employees";
 import Loader from "@/components/shared/Loader/Loader";
 import { roles, rolesToText } from "@/lib/helpers/roleToText";
 
