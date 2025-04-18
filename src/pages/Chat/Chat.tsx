@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useChat, type UseChatOptions } from "@ai-sdk/react";
-
+import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
-// import { transcribeAudio } from "@/lib/utils/audio";
+
 import { Chat } from "@/components/ui/chat";
 import {
   Select,
@@ -16,8 +16,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { uiActions, uiSelectors } from "@/store/ui";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { X } from "lucide-react";
+import { transcribeAudio } from "@/lib/transcribeAudio";
 
-const MODELS = [
+const LANGUAGES = [
   { id: "en", name: "English" },
   { id: "zh", name: "中文" },
   { id: "es", name: "Español" },
@@ -35,8 +36,9 @@ type ChatDemoProps = {
 };
 
 export function ChatBot(props: ChatDemoProps) {
-  const [selectedModel, setSelectedModel] = useState(MODELS[0].id);
+  const [selectedModel, setSelectedModel] = useState(LANGUAGES[0].id);
   const dispatch = useDispatch();
+  const { t, i18n } = useTranslation();
   const {
     messages,
     input,
@@ -55,14 +57,19 @@ export function ChatBot(props: ChatDemoProps) {
   });
 
   const user = useSelector(uiSelectors.getUser);
+  const changeLanguage = (lng: string) => {
+    console.log(lng);
+    setSelectedModel(lng);
+    i18n.changeLanguage(lng);
+  };
 
   return (
     <div
       className={cn(
-        "flex absolute z-[1000] bg-white p-8 text-[20px]",
+        "flex justify-between absolute z-[1000] bg-white p-8 text-[20px]",
         "flex-col",
         "h-full",
-        "w-full"
+        "w-[60%] max-lg:w-[80%] max-md:w-[100%]"
       )}
     >
       <div className={cn("flex", "justify-between", "mb-2", "w-full")}>
@@ -93,38 +100,40 @@ export function ChatBot(props: ChatDemoProps) {
           </div>
         )}
 
-        <Select value={selectedModel} onValueChange={setSelectedModel}>
-          <SelectTrigger className="w-[18%]">
-            <SelectValue placeholder="Select Model" />
-          </SelectTrigger>
-          <SelectContent className="top-4">
-            {MODELS.map((model) => (
-              <SelectItem key={model.id} value={model.id}>
-                {model.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+        <div className={cn("flex", "justify-end", "mb-2")}>
+          <Select value={selectedModel} onValueChange={changeLanguage}>
+            <SelectTrigger className="w-fit">
+              <SelectValue placeholder="Select Model" />
+            </SelectTrigger>
+            <SelectContent className="top-4">
+              {LANGUAGES.map((model) => (
+                <SelectItem key={model.id} value={model.id}>
+                  {model.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
 
-      <Chat
-        className="grow"
-        messages={messages}
-        handleSubmit={handleSubmit}
-        input={input}
-        handleInputChange={handleInputChange}
-        isGenerating={isLoading}
-        stop={stop}
-        append={append}
-        setMessages={setMessages}
-        // transcribeAudio={transcribeAudio}
-        suggestions={[
-          "Привет, я хочу написать обращение",
-          "Хочу сообщить о проблеме",
-          "Посмотреть реестр домов",
-          "Хочу ознакомиться со всеми домами на ФТ",
-        ]}
-      />
+        <Chat
+          className="grow"
+          messages={messages}
+          handleSubmit={handleSubmit}
+          input={input}
+          handleInputChange={handleInputChange}
+          isGenerating={isLoading}
+          stop={stop}
+          append={append}
+          setMessages={setMessages}
+          transcribeAudio={transcribeAudio}
+          suggestions={[
+            t("suggestion1"),
+            t("suggestion2"),
+            t("suggestion3"),
+            t("suggestion4"),
+          ]}
+        />
+      </div>
     </div>
   );
 }

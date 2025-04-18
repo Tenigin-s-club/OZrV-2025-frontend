@@ -15,6 +15,7 @@ import { CopyButton } from "@/components/ui/copy-button";
 import { MessageInput } from "@/components/ui/message-input";
 import { MessageList } from "@/components/ui/message-list";
 import { PromptSuggestions } from "@/components/ui/prompt-suggestions";
+import { useTranslation } from "react-i18next";
 
 interface ChatPropsBase {
   handleSubmit: (
@@ -189,11 +190,13 @@ export function Chat({
     [onRateResponse]
   );
 
+  const { t } = useTranslation();
+
   return (
     <ChatContainer className={className}>
       {isEmpty && append && suggestions ? (
         <PromptSuggestions
-          label="Привет! Я цифровой noмoщник «Сириус». Чем я могу помочь? ✨"
+          label={t("title")}
           append={append}
           suggestions={suggestions}
         />
@@ -248,12 +251,12 @@ export function ChatMessages({
 
   return (
     <div
-      className="h-[80vh] grid grid-cols-1 overflow-y-auto pb-4 overflow-x-hidden overflow-y-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+      className="grid grid-cols-1 overflow-y-auto pb-4"
       ref={containerRef}
       onScroll={handleScroll}
       onTouchStart={handleTouchStart}
     >
-      <div className="max-w-full [grid-column:1/1] [grid-row:1/1] content-end">
+      <div className="max-w-full [grid-column:1/1] [grid-row:1/1]">
         {children}
       </div>
 
