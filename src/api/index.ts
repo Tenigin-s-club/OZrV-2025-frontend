@@ -12,18 +12,15 @@ const createRequestInstance = (): AppApi => {
   const instance = axios.create({
     baseURL: ENV.apiBaseUrl,
     headers: defaultHeaders,
+    withCredentials: true,
   });
 
   instance.interceptors.response.use(
     (response) => response.data,
     (error: AxiosError) => {
-      if (error.status === 401) {
-        showErrorNotification("Необходимо авторизоваться!");
-        window.location.pathname = "/login";
-        return;
-      } else if (error.status === 500) {
+      if (error.status === 500) {
         showErrorNotification("Сервер не доступен");
-        return;
+        throw error;
       }
       const errorObject = error.response?.data as ApiError | undefined;
       if (!!errorObject && typeof errorObject === "object") {

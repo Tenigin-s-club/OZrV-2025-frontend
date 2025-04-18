@@ -4,7 +4,7 @@ import { request } from "..";
 export const requestLogout = async () => await request.post("/auth/logout");
 
 export const requestMe = async (): Promise<User> =>
-  await request.post("/auth/me");
+  await request.get("/auth/me");
 
 export const requestLogin = async (email: string, password: string) =>
   await request.post("/auth/login", { email, password });
@@ -17,9 +17,9 @@ export const requestRegister = async (
   password: string
 ) =>
   await request.post("/auth/register", {
-    name,
-    lastname,
-    middlename,
+    fio: `${(lastname || "").trim()} ${(name || "").trim()} ${(
+      middlename || ""
+    ).trim()}`.trim(),
     email,
     password,
   });

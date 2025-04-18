@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useChat, type UseChatOptions } from "@ai-sdk/react";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
@@ -21,6 +21,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { SidebarProvider } from "../../components/ui/sidebar";
 import { AppSidebar } from "../../modules/AppSidebar/AppSidebar";
 import { Chat as ChatType } from "@/types";
+import { fetchUser } from "@/store/ui/thunks";
 
 const LANGUAGES = [
   { id: "en", name: "English" },
@@ -55,6 +56,7 @@ const chats: ChatType[] = [
 export function ChatBot(props: ChatDemoProps) {
   const [selectedModel, setSelectedModel] = useState(LANGUAGES[0].id);
   const dispatch = useDispatch();
+
   const { t, i18n } = useTranslation();
   const {
     messages,
@@ -80,6 +82,10 @@ export function ChatBot(props: ChatDemoProps) {
     setSelectedModel(lng);
     i18n.changeLanguage(lng);
   };
+
+  useEffect(() => {
+    fetchUser(dispatch);
+  }, [dispatch]);
 
   return (
     <SidebarProvider

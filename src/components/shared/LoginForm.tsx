@@ -47,7 +47,8 @@ const LoginForm = () => {
       await fetchUser(dispatch);
       showSuccessNotification("Вы успешно вошли в аккаунт!");
       dispatch(uiActions.closeModal());
-    } catch {
+    } catch (e) {
+      alert(JSON.stringify(e));
       showErrorNotification("Не удалось войти в аккаунт, попробуйте еще раз.");
     }
   }
@@ -94,7 +95,7 @@ const LoginForm = () => {
         </form>
       </Form>
       <a
-        className="text-black text-center mx-auto"
+        className="text-black text-center mx-auto cursor-pointer"
         onClick={() => dispatch(uiActions.setModalOpened("register"))}
       >
         Нет аккаунта? Зарегистрироваться!

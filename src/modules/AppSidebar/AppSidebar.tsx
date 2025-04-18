@@ -13,14 +13,18 @@ import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { uiActions, uiSelectors } from "@/store/ui";
 import { useSelector } from "react-redux";
 import { Avatar, AvatarFallback } from "@radix-ui/react-avatar";
-import { MessageCirclePlusIcon, X } from "lucide-react";
+import { Loader2, MessageCirclePlusIcon, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cx } from "class-variance-authority";
+import Loader from "@/components/shared/Loader/Loader";
+import { fetchLogout } from "@/store/ui/thunks";
 
 export function AppSidebar({ items }: { items: Chat[] }) {
   const dispatch = useAppDispatch();
   const currentChatId = useSelector(uiSelectors.getChatOpened);
   const user = useSelector(uiSelectors.getUser);
+  const requests = useSelector(uiSelectors.getRequests);
+  if (requests["getUser"] === "pending") return <Loader />;
   return (
     <Sidebar>
       <SidebarContent className="p-4">
@@ -45,8 +49,15 @@ export function AppSidebar({ items }: { items: Chat[] }) {
                 Email: {user.email}
               </p>
             </div>
-            <Button className="ml-auto rounded-sm size-6 p-0">
-              <X className="size-2" />
+            <Button
+              onClick={() => fetchLogout(dispatch)}
+              className="ml-auto rounded-sm size-6 p-0"
+            >
+              {requests["logout"] === "pending" ? (
+                <Loader2 className="size-2" />
+              ) : (
+                <X className="size-2" />
+              )}
             </Button>
           </div>
         )}
