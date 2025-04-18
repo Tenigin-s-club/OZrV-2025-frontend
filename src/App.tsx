@@ -13,7 +13,9 @@ function App() {
   return (
     <Dialog>
       <DialogTrigger>
-        <Button className="absolute z-[1000] ">ОТКРЫТЬ ЧАТ</Button>
+        <Button className="fixed z-[1000] bottom-10 right-10 ">
+          ОТКРЫТЬ ЧАТ
+        </Button>
       </DialogTrigger>
       <DialogContent className="f-full w-full">
         <ChatBot />

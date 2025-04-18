@@ -8,6 +8,9 @@
  *
  * http://api.jqueryui.com/category/theming/
  */
+html, body{
+  scrollbar-gutter: stable;
+}
 .ui-helper-hidden {
   display: none;
 }
@@ -7635,7 +7638,8 @@ button.close {
   font-family: PT Sans Bold, sans-serif;
   font-size: 16px;
   line-height: 33px;
-  padding: 0 30px;
+  padding: 0 10px;
+  text-align: center;
   position: absolute;
   right: 15px;
   top: 15px;
@@ -8237,7 +8241,8 @@ button.close {
   .header__top-lk {
     font-size: 15px;
     line-height: 28px;
-    padding: 0 15px;
+    padding: 0 10px;
+    text-align: center;
     right: 65px;
     top: 10px;
     width: auto;

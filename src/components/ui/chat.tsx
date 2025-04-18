@@ -248,7 +248,7 @@ export function ChatMessages({
 
   return (
     <div
-      className="grid grid-cols-1 overflow-y-auto pb-4 overflow-x-hidden"
+      className="h-[80vh] grid grid-cols-1 overflow-y-auto pb-4 overflow-x-hidden overflow-y-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
       ref={containerRef}
       onScroll={handleScroll}
       onTouchStart={handleTouchStart}

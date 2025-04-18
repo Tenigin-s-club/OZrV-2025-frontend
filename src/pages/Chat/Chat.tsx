@@ -13,8 +13,16 @@ import {
 } from "@/components/ui/select";
 
 const MODELS = [
-  { id: "llama-3.3-70b-versatile", name: "Llama 3.3 70B" },
-  { id: "deepseek-r1-distill-llama-70b", name: "Deepseek R1 70B" },
+  { id: "en", name: "English" },
+  { id: "zh", name: "中文" },
+  { id: "es", name: "Español" },
+  { id: "hi", name: "हिन्दी" },
+  { id: "ar", name: "العربية" },
+  { id: "pt", name: "Português" },
+  { id: "ru", name: "Русский" },
+  { id: "ja", name: "日本語" },
+  { id: "de", name: "Deutsch" },
+  { id: "fr", name: "Français" },
 ];
 
 type ChatDemoProps = {
@@ -50,12 +58,12 @@ export function ChatBot(props: ChatDemoProps) {
         "w-full"
       )}
     >
-      {/* <div className={cn("flex", "justify-end", "mb-2")}>
+      <div className={cn("flex", "justify-end", "mb-2")}>
         <Select value={selectedModel} onValueChange={setSelectedModel}>
           <SelectTrigger className="w-[18%]">
             <SelectValue placeholder="Select Model" />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="top-4">
             {MODELS.map((model) => (
               <SelectItem key={model.id} value={model.id}>
                 {model.name}
@@ -63,7 +71,7 @@ export function ChatBot(props: ChatDemoProps) {
             ))}
           </SelectContent>
         </Select>
-      </div> */}
+      </div>
 
       <Chat
         className="grow"
