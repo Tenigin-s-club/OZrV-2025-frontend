@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useChat, type UseChatOptions } from "@ai-sdk/react";
-
+import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 
 import { Chat } from "@/components/ui/chat";
@@ -11,10 +11,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { recordAudio } from "@/lib/audio-utils";
 import { transcribeAudio } from "@/lib/transcribeAudio";
 
-const MODELS = [
+const LANGUAGES = [
   { id: "en", name: "English" },
   { id: "zh", name: "中文" },
   { id: "es", name: "Español" },
@@ -32,8 +31,8 @@ type ChatDemoProps = {
 };
 
 export function ChatBot(props: ChatDemoProps) {
-  const [selectedModel, setSelectedModel] = useState(MODELS[0].id);
-
+  const [selectedModel, setSelectedModel] = useState(LANGUAGES[0].id);
+  const { t, i18n } = useTranslation();
   const {
     messages,
     input,
@@ -51,6 +50,12 @@ export function ChatBot(props: ChatDemoProps) {
     },
   });
 
+  const changeLanguage = (lng: string) => {
+    console.log(lng);
+    setSelectedModel(lng);
+    i18n.changeLanguage(lng);
+  };
+
   return (
     <div
       className={cn(
@@ -61,12 +66,12 @@ export function ChatBot(props: ChatDemoProps) {
       )}
     >
       <div className={cn("flex", "justify-end", "mb-2")}>
-        <Select value={selectedModel} onValueChange={setSelectedModel}>
+        <Select value={selectedModel} onValueChange={changeLanguage}>
           <SelectTrigger className="w-fit">
             <SelectValue placeholder="Select Model" />
           </SelectTrigger>
           <SelectContent className="top-4">
-            {MODELS.map((model) => (
+            {LANGUAGES.map((model) => (
               <SelectItem key={model.id} value={model.id}>
                 {model.name}
               </SelectItem>
@@ -87,10 +92,10 @@ export function ChatBot(props: ChatDemoProps) {
         setMessages={setMessages}
         transcribeAudio={transcribeAudio}
         suggestions={[
-          "Привет, я хочу написать обращение",
-          "Хочу сообщить о проблеме",
-          "Посмотреть реестр домов",
-          "Хочу ознакомиться со всеми домами на ФТ",
+          t("suggestion1"),
+          t("suggestion2"),
+          t("suggestion3"),
+          t("suggestion4"),
         ]}
       />
     </div>
