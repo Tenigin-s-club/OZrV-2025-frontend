@@ -12,10 +12,16 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { useNavigate } from "react-router-dom";
 import Title from "../ui/title";
-import { showErrorNotification } from "@/lib/helpers/notification";
-import { requestRegister } from "@/api/user/user";
+import {
+  showErrorNotification,
+  showInfoNotification,
+  showSuccessNotification,
+} from "@/lib/helpers/notification";
+import { requestLogin, requestRegister } from "@/api/user/user";
+import { useDispatch } from "react-redux";
+import { uiActions } from "@/store/ui";
+import { fetchUser } from "@/store/ui/thunks";
 
 const formSchema = z.object({
   email: z.string().email({ message: "incorrect email" }),
@@ -32,7 +38,7 @@ const formSchema = z.object({
 });
 
 const RegisterForm = () => {
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -50,13 +56,18 @@ const RegisterForm = () => {
   }: z.infer<typeof formSchema>) {
     try {
       await requestRegister(name, lastname, middlename, email, password);
-      navigate("/");
+      showInfoNotification("Запрашиваем данные об аккаунте...");
+      await fetchUser(dispatch);
+      showSuccessNotification("Вы успешно вошли в аккаунт!");
+      dispatch(uiActions.closeModal());
     } catch {
-      showErrorNotification("Не удалось войти в аккаунт, попробуйте еще раз.");
+      showErrorNotification(
+        "Не удалось зарегистрироваться или войти в аккаунт, попробуйте еще раз."
+      );
     }
   }
   return (
-    <div className="w-96 rounded-lg border bg-card text-card-foreground shadow-sm flex flex-col space-y-1.5 p-6">
+    <div className="w-96 rounded-lg border bg-card text-card-foreground shadow-sm flex flex-col space-y-1.5 p-6 m-auto">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mb-4">
           <Title size="sm" text={"Регистрация"} />
@@ -136,7 +147,10 @@ const RegisterForm = () => {
           </Button>
         </form>
       </Form>
-      <a className="text-black mx-auto" href="/login">
+      <a
+        className="text-black mx-auto"
+        onClick={() => dispatch(uiActions.setModalOpened("login"))}
+      >
         Есть аккаунт? Войти!
       </a>
     </div>

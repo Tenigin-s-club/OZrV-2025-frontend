@@ -11,6 +11,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { useDispatch, useSelector } from "react-redux";
+import { uiActions, uiSelectors } from "@/store/ui";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { X } from "lucide-react";
 
 const MODELS = [
   { id: "en", name: "English" },
@@ -31,7 +36,7 @@ type ChatDemoProps = {
 
 export function ChatBot(props: ChatDemoProps) {
   const [selectedModel, setSelectedModel] = useState(MODELS[0].id);
-
+  const dispatch = useDispatch();
   const {
     messages,
     input,
@@ -49,6 +54,8 @@ export function ChatBot(props: ChatDemoProps) {
     },
   });
 
+  const user = useSelector(uiSelectors.getUser);
+
   return (
     <div
       className={cn(
@@ -58,7 +65,34 @@ export function ChatBot(props: ChatDemoProps) {
         "w-full"
       )}
     >
-      <div className={cn("flex", "justify-end", "mb-2")}>
+      <div className={cn("flex", "justify-between", "mb-2", "w-full")}>
+        {!user && (
+          <Button onClick={() => dispatch(uiActions.setModalOpened("login"))}>
+            Войти
+          </Button>
+        )}
+        {user && (
+          <div className="flex gap-3 items-center">
+            <Avatar>
+              <AvatarFallback>
+                {user.fio.split(" ")[0][0].toLocaleUpperCase()}
+                {user.fio.split(" ")[1][0].toLocaleUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+            <div>
+              <p className="text-[#777] text-sm max-w-60 text-ellipsis overflow-hidden line-clamp-1">
+                Name: {user.fio}
+              </p>
+              <p className="text-[#777] text-sm max-w-60 text-ellipsis overflow-hidden line-clamp-1">
+                Email: {user.email}
+              </p>
+            </div>
+            <Button className="rounded-full size-10">
+              <X />
+            </Button>
+          </div>
+        )}
+
         <Select value={selectedModel} onValueChange={setSelectedModel}>
           <SelectTrigger className="w-[18%]">
             <SelectValue placeholder="Select Model" />

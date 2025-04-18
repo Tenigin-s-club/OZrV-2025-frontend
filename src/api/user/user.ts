@@ -1,11 +1,13 @@
+import { User } from "@/store/ui/types";
 import { request } from "..";
 
-export const requestLogout = async () => request.post("/profile/logout");
+export const requestLogout = async () => await request.post("/auth/logout");
 
-export const requestMe = async () => request.post("/profile/me");
+export const requestMe = async (): Promise<User> =>
+  await request.post("/auth/me");
 
 export const requestLogin = async (email: string, password: string) =>
-  request.post("/profile/login", { email, password });
+  await request.post("/auth/login", { email, password });
 
 export const requestRegister = async (
   name: string,
@@ -14,7 +16,7 @@ export const requestRegister = async (
   email: string,
   password: string
 ) =>
-  request.post("/profile/register", {
+  await request.post("/auth/register", {
     name,
     lastname,
     middlename,

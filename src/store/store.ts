@@ -1,12 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
-
-// Example slice (you can replace this with your actual slices)
+import { uiStateName } from "./ui/types";
+import { uiReducer } from "./ui";
 
 const store = configureStore({
-  reducer: {},
+  reducer: {
+    [uiStateName]: uiReducer,
+  },
 });
 
-// Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 

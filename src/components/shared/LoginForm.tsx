@@ -14,8 +14,15 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useNavigate } from "react-router-dom";
 import Title from "../ui/title";
-import { showErrorNotification } from "@/lib/helpers/notification";
+import {
+  showErrorNotification,
+  showInfoNotification,
+  showSuccessNotification,
+} from "@/lib/helpers/notification";
 import { requestLogin } from "@/api/user/user";
+import { uiActions } from "@/store/ui";
+import { useDispatch } from "react-redux";
+import { fetchUser } from "@/store/ui/thunks";
 
 const formSchema = z.object({
   email: z.string().email({ message: "incorrect email" }),
@@ -25,8 +32,7 @@ const formSchema = z.object({
 });
 
 const LoginForm = () => {
-  const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -38,13 +44,16 @@ const LoginForm = () => {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       await requestLogin(values.email, values.password);
-      navigate("/");
+      showInfoNotification("Запрашиваем данные об аккаунте...");
+      await fetchUser(dispatch);
+      showSuccessNotification("Вы успешно вошли в аккаунт!");
+      dispatch(uiActions.closeModal());
     } catch {
       showErrorNotification("Не удалось войти в аккаунт, попробуйте еще раз.");
     }
   }
   return (
-    <div className="w-96 rounded-lg border bg-card text-card-foreground shadow-sm flex flex-col space-y-1.5 p-6">
+    <div className="w-96 rounded-lg border bg-card text-card-foreground shadow-sm flex flex-col space-y-1.5 p-6 m-auto">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mb-4">
           <Title size="sm" text={"Авторизация"} />
@@ -85,7 +94,10 @@ const LoginForm = () => {
           </Button>
         </form>
       </Form>
-      <a className="text-black text-center mx-auto" href={"/register"}>
+      <a
+        className="text-black text-center mx-auto"
+        onClick={() => dispatch(uiActions.setModalOpened("register"))}
+      >
         Нет аккаунта? Зарегистрироваться!
       </a>
     </div>
