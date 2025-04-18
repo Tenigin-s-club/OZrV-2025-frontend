@@ -52,15 +52,15 @@ export function ChatBot(props: ChatDemoProps) {
   return (
     <div
       className={cn(
-        "flex absolute z-[1000] bg-white p-8 text-[20px]",
+        "flex justify-between absolute z-[1000] bg-white p-8 text-[20px]",
         "flex-col",
         "h-full",
-        "w-full"
+        "w-[60%] max-lg:w-[80%] max-md:w-[100%]"
       )}
     >
       <div className={cn("flex", "justify-end", "mb-2")}>
         <Select value={selectedModel} onValueChange={setSelectedModel}>
-          <SelectTrigger className="w-[18%]">
+          <SelectTrigger className="w-fit">
             <SelectValue placeholder="Select Model" />
           </SelectTrigger>
           <SelectContent className="top-4">
