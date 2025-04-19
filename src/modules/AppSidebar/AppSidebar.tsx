@@ -52,10 +52,10 @@ export function AppSidebar() {
                 </Avatar>
                 <div>
                   <p className="text-[#777] text-sm max-w-60 text-ellipsis overflow-hidden line-clamp-1">
-                    Name: {user.fio}
+                    Name: {user?.fio}
                   </p>
                   <p className="text-[#777] text-sm max-w-60 text-ellipsis overflow-hidden line-clamp-1">
-                    Email: {user.email}
+                    Email: {user?.email}
                   </p>
                 </div>
                 <Button
