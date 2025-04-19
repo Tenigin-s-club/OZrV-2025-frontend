@@ -1,14 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import {
-  ArrowUp,
-  Info,
-  Loader2,
-  Mic,
-  Paperclip,
-  Square,
-  X,
-} from "lucide-react";
+import { ArrowUp, Info, Loader2, Mic, Paperclip, Square } from "lucide-react";
 import { omit } from "remeda";
 
 import { cn } from "@/lib/utils";
@@ -44,7 +36,7 @@ type MessageInputProps =
   | MessageInputWithAttachmentsProps;
 
 export function MessageInput({
-  placeholder = "Ask AI...",
+  placeholder = "Спросить помощника...",
   className,
   onKeyDown: onKeyDownProp,
   submitOnEnter = true,
@@ -211,6 +203,7 @@ export function MessageInput({
             ref={textAreaRef}
             onPaste={onPaste}
             onKeyDown={onKeyDown}
+            id="textarea-msg"
             className={cn(
               "z-10 w-full grow resize-none rounded-xl border border-input bg-background p-3 pr-24 text-sm ring-offset-background transition-[border] placeholder:text-muted-foreground focus-visible:border-primary focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50",
               showFileList && "pb-16",
@@ -323,28 +316,6 @@ function FileUploadOverlay({ isDragging }: FileUploadOverlayProps) {
       )}
     </AnimatePresence>
   );
-}
-
-function showFileUploadDialog() {
-  const input = document.createElement("input");
-
-  input.type = "file";
-  input.multiple = true;
-  input.accept = "*/*";
-  input.click();
-
-  return new Promise<File[] | null>((resolve) => {
-    input.onchange = (e) => {
-      const files = (e.currentTarget as HTMLInputElement).files;
-
-      if (files) {
-        resolve(Array.from(files));
-        return;
-      }
-
-      resolve(null);
-    };
-  });
 }
 
 function TranscribingOverlay() {

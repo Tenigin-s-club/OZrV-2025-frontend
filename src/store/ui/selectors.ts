@@ -1,3 +1,4 @@
+import { Chat } from "@/types";
 import {
   Message,
   ModalOpened,
@@ -20,6 +21,8 @@ export const getModalOpened = (s: StoreWithUIState): ModalOpened =>
 
 export const getChatOpened = (s: StoreWithUIState): string | null =>
   getState(s).chatOpened;
+
+export const getChats = (s: StoreWithUIState): Chat[] => getState(s).chats;
 
 export const getRequests = (
   s: StoreWithUIState

@@ -155,3 +155,8 @@
 #nprogress .spinner-icon {
   @apply border-t-primary border-l-primary !important;
 }
+
+.Toastify {
+  z-index: 10001;
+  position: relative;
+}

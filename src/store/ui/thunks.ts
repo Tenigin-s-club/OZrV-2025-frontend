@@ -1,16 +1,89 @@
+import {
+  requestChats,
+  requestMessages,
+  requestSendMessage,
+} from "@/api/messages";
 import { uiActions } from ".";
-import { requestMe } from "../../api/user/user";
+import { requestLogout, requestMe } from "../../api/user";
 import { showErrorNotification } from "../../lib/helpers/notification";
 import { AppDispatch } from "../store";
 
 export const fetchUser = async (dispatch: AppDispatch) => {
   dispatch(uiActions.setRequestStarted("getUser"));
+  dispatch(uiActions.setRequestStarted("chats"));
   try {
     const user = await requestMe();
     dispatch(uiActions.setUser(user));
-  } catch {
-    showErrorNotification("Ошибка при получении информации о пользователе");
+    const chats = await requestChats();
+    dispatch(uiActions.setChats(chats));
   } finally {
     dispatch(uiActions.setRequestFinished("getUser"));
+    dispatch(uiActions.setRequestFinished("chats"));
+  }
+};
+
+export const fetchLogout = async (dispatch: AppDispatch) => {
+  dispatch(uiActions.setRequestStarted("logout"));
+  try {
+    await requestLogout();
+    dispatch(uiActions.setUser(null));
+    dispatch(uiActions.setChatOpened(null));
+    dispatch(uiActions.setChats([]));
+  } catch {
+    showErrorNotification("Ошибка при выходе из аккаунта");
+  } finally {
+    dispatch(uiActions.setRequestFinished("logout"));
+  }
+};
+
+export const fetchMessages = async (
+  dispatch: AppDispatch,
+  chatId: string | null
+) => {
+  console.log(chatId);
+  dispatch(uiActions.setRequestStarted("messages"));
+  try {
+    if (!chatId) return dispatch(uiActions.setMessages([]));
+    const messages = await requestMessages(chatId);
+    dispatch(uiActions.setMessages(messages));
+  } catch {
+    showErrorNotification(
+      `Ошибка при получении сообщений для чата – ${chatId}`
+    );
+  } finally {
+    dispatch(uiActions.setRequestFinished("messages"));
+  }
+};
+
+export const fetchSendMessage = async (
+  dispatch: AppDispatch,
+  question: string,
+  chatId: string | null = null
+) => {
+  dispatch(
+    uiActions.addMessage({
+      id: "0",
+      message: question,
+      role: "user",
+      createdAt: new Date(),
+    })
+  );
+  dispatch(uiActions.setRequestStarted("message"));
+  try {
+    const answer = await requestSendMessage(question, chatId);
+    dispatch(
+      uiActions.addMessage({
+        message: answer.message,
+        id: String(Math.random() * 1000000),
+        role: "asistant",
+        createdAt: new Date(),
+      })
+    );
+  } catch {
+    showErrorNotification(
+      `Ошибка при получении сообщений для чата – ${chatId}`
+    );
+  } finally {
+    dispatch(uiActions.setRequestFinished("messages"));
   }
 };

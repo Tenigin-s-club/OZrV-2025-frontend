@@ -18,7 +18,7 @@ import {
   showInfoNotification,
   showSuccessNotification,
 } from "@/lib/helpers/notification";
-import { requestLogin } from "@/api/user/user";
+import { requestLogin } from "@/api/user";
 import { uiActions } from "@/store/ui";
 import { useDispatch } from "react-redux";
 import { fetchUser } from "@/store/ui/thunks";
@@ -94,7 +94,7 @@ const LoginForm = () => {
         </form>
       </Form>
       <a
-        className="text-black text-center mx-auto"
+        className="text-black text-center mx-auto cursor-pointer"
         onClick={() => dispatch(uiActions.setModalOpened("register"))}
       >
         Нет аккаунта? Зарегистрироваться!

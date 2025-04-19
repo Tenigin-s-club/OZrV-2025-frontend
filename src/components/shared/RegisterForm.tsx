@@ -15,13 +15,11 @@ import { Button } from "../ui/button";
 import Title from "../ui/title";
 import {
   showErrorNotification,
-  showInfoNotification,
   showSuccessNotification,
 } from "@/lib/helpers/notification";
-import { requestRegister } from "@/api/user/user";
+import { requestRegister } from "@/api/user";
 import { useDispatch } from "react-redux";
 import { uiActions } from "@/store/ui";
-import { fetchUser } from "@/store/ui/thunks";
 
 const formSchema = z.object({
   email: z.string().email({ message: "incorrect email" }),
@@ -56,13 +54,13 @@ const RegisterForm = () => {
   }: z.infer<typeof formSchema>) {
     try {
       await requestRegister(name, lastname, middlename, email, password);
-      showInfoNotification("Запрашиваем данные об аккаунте...");
-      await fetchUser(dispatch);
-      showSuccessNotification("Вы успешно вошли в аккаунт!");
+      showSuccessNotification(
+        "Вы успешно зарегистрировались в аккаунт, необходимо войти в аккаунт!"
+      );
       dispatch(uiActions.closeModal());
     } catch {
       showErrorNotification(
-        "Не удалось зарегистрироваться или войти в аккаунт, попробуйте еще раз."
+        "Не удалось зарегистрироваться, попробуйте еще раз."
       );
     }
   }
@@ -148,7 +146,7 @@ const RegisterForm = () => {
         </form>
       </Form>
       <a
-        className="text-black mx-auto"
+        className="text-black mx-auto  cursor-pointer"
         onClick={() => dispatch(uiActions.setModalOpened("login"))}
       >
         Есть аккаунт? Войти!

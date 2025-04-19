@@ -4,6 +4,7 @@ import { Dialog, DialogContent } from "./components/ui/dialog";
 import { DialogTrigger } from "@radix-ui/react-dialog";
 import { Button } from "./components/ui/button";
 import ModalsContainer from "./modules/ModalsContainer/ModalsContainer";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <ChatBot />
         </DialogContent>
       </Dialog>
+      <ToastContainer bodyClassName={"z-[10000000] relative"} />
       <ModalsContainer />
     </>
   );

@@ -1,4 +1,4 @@
-import {
+import React, {
   forwardRef,
   useCallback,
   useRef,
@@ -20,13 +20,12 @@ import { ScrollArea } from "./scroll-area";
 
 interface ChatPropsBase {
   handleSubmit: (
-    event?: { preventDefault?: () => void },
-    options?: { experimental_attachments?: FileList }
+    event?: React.FormEvent,
+    inputValue?: string,
+    clearValue?: VoidFunction
   ) => void;
   messages: Array<Message>;
-  input: string;
   className?: string;
-  handleInputChange: React.ChangeEventHandler<HTMLTextAreaElement>;
   isGenerating: boolean;
   stop?: () => void;
   onRateResponse?: (
@@ -52,8 +51,8 @@ type ChatProps = ChatPropsWithoutSuggestions | ChatPropsWithSuggestions;
 export function Chat({
   messages,
   handleSubmit,
-  input,
-  handleInputChange,
+  // input,
+  // handleInputChange,
   stop,
   isGenerating,
   append,
@@ -63,6 +62,7 @@ export function Chat({
   setMessages,
   transcribeAudio,
 }: ChatProps) {
+  const [input, handleInputChange] = useState("");
   const lastMessage = messages.at(-1);
   const isEmpty = messages.length === 0;
   const isTyping = lastMessage?.role === "user";
@@ -76,9 +76,9 @@ export function Chat({
     if (!setMessages) return;
 
     const latestMessages = [...messagesRef.current];
-    const lastAssistantMessage = latestMessages.findLast(
-      (m) => m.role === "assistant"
-    );
+    const lastAssistantMessage = latestMessages
+      .filter((m) => m.role === "assistant")
+      .at(-1);
 
     if (!lastAssistantMessage) return;
 
@@ -214,12 +214,14 @@ export function Chat({
 
       <ChatForm
         isPending={isGenerating || isTyping}
-        handleSubmit={handleSubmit}
+        handleSubmit={(e) =>
+          handleSubmit(e, input, () => handleInputChange(""))
+        }
       >
         {({ files, setFiles }) => (
           <MessageInput
             value={input}
-            onChange={handleInputChange}
+            onChange={(e) => handleInputChange(e.target.value)}
             allowAttachments
             files={files}
             setFiles={setFiles}
@@ -297,7 +299,7 @@ interface ChatFormProps {
   className?: string;
   isPending: boolean;
   handleSubmit: (
-    event?: { preventDefault?: () => void },
+    event?: React.FormEvent,
     options?: { experimental_attachments?: FileList }
   ) => void;
   children: (props: {
@@ -307,7 +309,7 @@ interface ChatFormProps {
 }
 
 export const ChatForm = forwardRef<HTMLFormElement, ChatFormProps>(
-  ({ children, handleSubmit, isPending, className }, ref) => {
+  ({ children, handleSubmit, className }, ref) => {
     const [files, setFiles] = useState<File[] | null>(null);
 
     const onSubmit = (event: React.FormEvent) => {

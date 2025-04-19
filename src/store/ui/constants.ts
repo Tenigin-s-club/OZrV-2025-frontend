@@ -11,4 +11,5 @@ export const uiInitialState: UIState = {
   messages: [],
   modalOpened: null,
   chatOpened: null,
+  chats: [],
 };
