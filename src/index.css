@@ -2,11 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-html {
-  scroll-behavior: smooth;
-  scrollbar-gutter: stable;
-}
-
 @font-face {
   font-family: dinBold;
   src: local, url(/frontend/public/fonts/dinBold.woff2),

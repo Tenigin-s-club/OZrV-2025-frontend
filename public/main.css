@@ -8,9 +8,7 @@
  *
  * http://api.jqueryui.com/category/theming/
  */
-html, body{
-  scrollbar-gutter: stable;
-}
+
 .ui-helper-hidden {
   display: none;
 }
