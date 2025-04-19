@@ -1,14 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import {
-  ArrowUp,
-  Info,
-  Loader2,
-  Mic,
-  Paperclip,
-  Square,
-  X,
-} from "lucide-react";
+import { ArrowUp, Info, Loader2, Mic, Paperclip, Square } from "lucide-react";
 import { omit } from "remeda";
 
 import { cn } from "@/lib/utils";
@@ -323,28 +315,6 @@ function FileUploadOverlay({ isDragging }: FileUploadOverlayProps) {
       )}
     </AnimatePresence>
   );
-}
-
-function showFileUploadDialog() {
-  const input = document.createElement("input");
-
-  input.type = "file";
-  input.multiple = true;
-  input.accept = "*/*";
-  input.click();
-
-  return new Promise<File[] | null>((resolve) => {
-    input.onchange = (e) => {
-      const files = (e.currentTarget as HTMLInputElement).files;
-
-      if (files) {
-        resolve(Array.from(files));
-        return;
-      }
-
-      resolve(null);
-    };
-  });
 }
 
 function TranscribingOverlay() {

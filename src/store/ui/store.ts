@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Message, ModalOpened, uiStateName } from "./types";
 import { uiInitialState } from "./constants";
 import { User } from "./types";
+import { Chat } from "@/types";
 
 const uiSlice = createSlice({
   name: uiStateName,
@@ -30,6 +31,9 @@ const uiSlice = createSlice({
     },
     setNewChat(state) {
       state.chatOpened = null;
+    },
+    setChats(state, { payload }: PayloadAction<Chat[]>) {
+      state.chats = payload;
     },
     closeModal(state) {
       state.modalOpened = null;

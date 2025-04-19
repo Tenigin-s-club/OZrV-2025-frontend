@@ -1,3 +1,5 @@
+import { Chat } from "@/types";
+
 export const uiStateName = "ui";
 
 export type RequestState = "idle" | "pending" | "fetched";
@@ -23,6 +25,7 @@ export type UIState = {
   messages: Message[];
   modalOpened: ModalOpened;
   chatOpened: string | null;
+  chats: Chat[];
 };
 
 export type StoreWithUIState = {

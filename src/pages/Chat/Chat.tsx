@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { CSSProperties, useEffect, useState } from "react";
 import { useChat, type UseChatOptions } from "@ai-sdk/react";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
@@ -11,17 +11,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-import { useDispatch, useSelector } from "react-redux";
-import { uiActions, uiSelectors } from "@/store/ui";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { X } from "lucide-react";
+import { useSelector } from "react-redux";
+import { uiSelectors } from "@/store/ui";
 import { transcribeAudio } from "@/lib/transcribeAudio";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { SidebarProvider } from "../../components/ui/sidebar";
 import { AppSidebar } from "../../modules/AppSidebar/AppSidebar";
-import { Chat as ChatType } from "@/types";
-import { fetchUser } from "@/store/ui/thunks";
+import { fetchMessages, fetchUser } from "@/store/ui/thunks";
+import Loader from "@/components/shared/Loader/Loader";
+import { useAppDispatch } from "@/hooks/useAppDispatch";
 
 const LANGUAGES = [
   { id: "en", name: "English" },
@@ -40,23 +38,10 @@ type ChatDemoProps = {
   initialMessages?: UseChatOptions["initialMessages"];
 };
 
-const chats: ChatType[] = [
-  {
-    id: "123-ased-q23-23-wa",
-    name: "test chat 1",
-    createdAt: "2025-04-18T21:55:03Z",
-  },
-  {
-    id: "123-a-fasdq3-4--wa",
-    name: "test chat 2",
-    createdAt: "2025-04-16T21:55:03Z",
-  },
-];
-
 export function ChatBot(props: ChatDemoProps) {
   const [selectedModel, setSelectedModel] = useState(LANGUAGES[0].id);
-  const dispatch = useDispatch();
-
+  const dispatch = useAppDispatch();
+  const requests = useSelector(uiSelectors.getRequests);
   const { t, i18n } = useTranslation();
   const {
     messages,
@@ -87,15 +72,20 @@ export function ChatBot(props: ChatDemoProps) {
     fetchUser(dispatch);
   }, [dispatch]);
 
+  useEffect(() => {
+    fetchMessages(dispatch, currentChatId);
+  }, [currentChatId, dispatch]);
+
   return (
     <SidebarProvider
-      style={{
-        // @ts-ignore
-        "--sidebar-width": "20rem",
-        "--sidebar-width-mobile": "20rem",
-      }}
+      style={
+        {
+          "--sidebar-width-mobile": "20rem",
+          "--sidebar-width": "20rem",
+        } as unknown as CSSProperties
+      }
     >
-      <AppSidebar items={chats} />
+      <AppSidebar />
       <div
         className={cn(
           "flex justify-between m-auto relative z-[1000] bg-white p-8 text-[20px]",
@@ -121,24 +111,33 @@ export function ChatBot(props: ChatDemoProps) {
             </Select>
           </div>
         </div>
-        <Chat
-          className="grow"
-          messages={messages}
-          handleSubmit={handleSubmit}
-          input={input}
-          handleInputChange={handleInputChange}
-          isGenerating={isLoading}
-          stop={stop}
-          append={append}
-          setMessages={setMessages}
-          transcribeAudio={transcribeAudio}
-          suggestions={[
-            t("suggestion1"),
-            t("suggestion2"),
-            t("suggestion3"),
-            t("suggestion4"),
-          ]}
-        />
+        {(requests["messages"] === "pending" ||
+          requests["chats"] === "pending") && <Loader />}
+        {requests["messages"] !== "pending" &&
+          requests["chats"] !== "pending" && (
+            <Chat
+              className="grow"
+              messages={messages.map(({ id, role, content }) => ({
+                id,
+                role,
+                content,
+              }))}
+              handleSubmit={handleSubmit}
+              input={input}
+              handleInputChange={handleInputChange}
+              isGenerating={isLoading}
+              stop={stop}
+              append={append}
+              setMessages={setMessages}
+              transcribeAudio={transcribeAudio}
+              suggestions={[
+                t("suggestion1"),
+                t("suggestion2"),
+                t("suggestion3"),
+                t("suggestion4"),
+              ]}
+            />
+          )}
       </div>
     </SidebarProvider>
   );

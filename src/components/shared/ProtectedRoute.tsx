@@ -1,7 +1,7 @@
 import { FC, PropsWithChildren } from "react";
 import { useEffectOnce } from "@/hooks/useEffectOnce";
 import { showErrorNotification } from "@/lib/helpers/notification";
-import { requestMe } from "@/api/user/user";
+import { requestMe } from "@/api/user";
 
 export const ProtectedRoute: FC<PropsWithChildren> = ({ children }) => {
   useEffectOnce(() => {

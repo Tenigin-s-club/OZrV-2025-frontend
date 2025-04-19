@@ -8,7 +8,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Chat } from "@/types";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { uiActions, uiSelectors } from "@/store/ui";
 import { useSelector } from "react-redux";
@@ -19,11 +18,12 @@ import { cx } from "class-variance-authority";
 import Loader from "@/components/shared/Loader/Loader";
 import { fetchLogout } from "@/store/ui/thunks";
 
-export function AppSidebar({ items }: { items: Chat[] }) {
+export function AppSidebar() {
   const dispatch = useAppDispatch();
   const currentChatId = useSelector(uiSelectors.getChatOpened);
   const user = useSelector(uiSelectors.getUser);
   const requests = useSelector(uiSelectors.getRequests);
+  const chats = useSelector(uiSelectors.getChats);
   if (requests["getUser"] === "pending") return <Loader />;
   return (
     <Sidebar>
@@ -77,7 +77,7 @@ export function AppSidebar({ items }: { items: Chat[] }) {
                   <p>Новый чат</p>
                 </span>
               </Button>
-              {items.map((item) => (
+              {chats.map((item) => (
                 <SidebarMenuItem key={item.id}>
                   <SidebarMenuButton
                     className={cx(

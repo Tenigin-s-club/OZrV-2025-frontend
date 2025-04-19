@@ -1,5 +1,5 @@
 import { User } from "@/store/ui/types";
-import { request } from "..";
+import { request } from ".";
 
 export const requestLogout = async () => await request.post("/auth/logout");
 

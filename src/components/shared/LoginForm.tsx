@@ -18,7 +18,7 @@ import {
   showInfoNotification,
   showSuccessNotification,
 } from "@/lib/helpers/notification";
-import { requestLogin } from "@/api/user/user";
+import { requestLogin } from "@/api/user";
 import { uiActions } from "@/store/ui";
 import { useDispatch } from "react-redux";
 import { fetchUser } from "@/store/ui/thunks";
@@ -47,8 +47,7 @@ const LoginForm = () => {
       await fetchUser(dispatch);
       showSuccessNotification("Вы успешно вошли в аккаунт!");
       dispatch(uiActions.closeModal());
-    } catch (e) {
-      alert(JSON.stringify(e));
+    } catch {
       showErrorNotification("Не удалось войти в аккаунт, попробуйте еще раз.");
     }
   }
