@@ -46,8 +46,8 @@ export function AppSidebar() {
               <div className="flex gap-3 items-center">
                 <Avatar>
                   <AvatarFallback className="size-10 bg-[#E9E9E9] rounded-sm flex justify-center items-center">
-                    {user.fio.split(" ")[0][0].toLocaleUpperCase()}
-                    {user.fio.split(" ")[1][0].toLocaleUpperCase()}
+                    {user?.fio?.split(" ")[0][0]?.toLocaleUpperCase()}
+                    {user?.fio?.split(" ")[1][0]?.toLocaleUpperCase()}
                   </AvatarFallback>
                 </Avatar>
                 <div>
