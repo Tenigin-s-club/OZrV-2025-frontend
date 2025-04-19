@@ -17,6 +17,7 @@ import { MessageList } from "@/components/ui/message-list";
 import { PromptSuggestions } from "@/components/ui/prompt-suggestions";
 import { useTranslation } from "react-i18next";
 import { ScrollArea } from "./scroll-area";
+import { Showcase } from "../shared/Showcase";
 
 interface ChatPropsBase {
   handleSubmit: (
@@ -211,6 +212,8 @@ export function Chat({
           />
         </ChatMessages>
       ) : null}
+
+      <Showcase />
 
       <ChatForm
         isPending={isGenerating || isTyping}

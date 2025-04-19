@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Message, ModalOpened, uiStateName } from "./types";
 import { uiInitialState } from "./constants";
-import { User } from "./types";
+import { User, Event } from "./types";
 import { Chat } from "@/types";
 
 const uiSlice = createSlice({
@@ -13,6 +13,12 @@ const uiSlice = createSlice({
     },
     setMessages(state, { payload }: PayloadAction<Message[]>) {
       state.messages = payload;
+    },
+    setEvents(state, { payload }: PayloadAction<Event[]>) {
+      state.events = payload;
+    },
+    setCurrentEvent(state, { payload }: PayloadAction<Event | null>) {
+      state.currentEvent = payload;
     },
     addMessage(state, { payload }: PayloadAction<Message>) {
       state.messages = [...state.messages, payload];

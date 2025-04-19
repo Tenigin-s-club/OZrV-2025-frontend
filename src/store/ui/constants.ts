@@ -12,4 +12,6 @@ export const uiInitialState: UIState = {
   modalOpened: null,
   chatOpened: null,
   chats: [],
+  events: [],
+  currentEvent: null,
 };

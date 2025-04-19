@@ -1,5 +1,6 @@
 import { Chat } from "@/types";
 import {
+  Event,
   Message,
   ModalOpened,
   RequestState,
@@ -23,6 +24,11 @@ export const getChatOpened = (s: StoreWithUIState): string | null =>
   getState(s).chatOpened;
 
 export const getChats = (s: StoreWithUIState): Chat[] => getState(s).chats;
+
+export const getEvents = (s: StoreWithUIState): Event[] => getState(s).events;
+
+export const getCurrentEvent = (s: StoreWithUIState): Event | null =>
+  getState(s).currentEvent;
 
 export const getRequests = (
   s: StoreWithUIState

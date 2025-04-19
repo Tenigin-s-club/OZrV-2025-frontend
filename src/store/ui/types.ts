@@ -17,7 +17,7 @@ export type Message = {
   createdAt: Date;
 };
 
-export type ModalOpened = "register" | "login" | null;
+export type ModalOpened = "register" | "login" | "event" | null;
 
 export type UIState = {
   user: User | null;
@@ -26,8 +26,18 @@ export type UIState = {
   modalOpened: ModalOpened;
   chatOpened: string | null;
   chats: Chat[];
+  events: Event[];
+  currentEvent: Event | null;
 };
 
 export type StoreWithUIState = {
   [uiStateName]: UIState;
+};
+
+export type Event = {
+  id: string;
+  title: string;
+  image_url: string;
+  description: string;
+  date_event: string;
 };

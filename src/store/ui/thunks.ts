@@ -7,6 +7,7 @@ import { uiActions } from ".";
 import { requestLogout, requestMe } from "../../api/user";
 import { showErrorNotification } from "../../lib/helpers/notification";
 import { AppDispatch } from "../store";
+import { requestEvents } from "@/api/showcase";
 
 export const fetchUser = async (dispatch: AppDispatch) => {
   dispatch(uiActions.setRequestStarted("getUser"));
@@ -121,6 +122,18 @@ export const fetchSendMessage = async (
     showErrorNotification(
       `Ошибка при получении сообщений для чата – ${chatId}`
     );
+  } finally {
+    dispatch(uiActions.setRequestFinished("messages"));
+  }
+};
+
+export const fetchEvents = async (dispatch: AppDispatch) => {
+  dispatch(uiActions.setRequestStarted("events"));
+  try {
+    const events = await requestEvents();
+    dispatch(uiActions.setEvents(events));
+  } catch {
+    showErrorNotification(`Ошибка при получении событий`);
   } finally {
     dispatch(uiActions.setRequestFinished("messages"));
   }
