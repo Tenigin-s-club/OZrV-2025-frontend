@@ -1,4 +1,8 @@
-import { requestChats, requestMessages } from "@/api/messages";
+import {
+  requestChats,
+  requestMessages,
+  requestSendMessage,
+} from "@/api/messages";
 import { uiActions } from ".";
 import { requestLogout, requestMe } from "../../api/user";
 import { showErrorNotification } from "../../lib/helpers/notification";
@@ -42,6 +46,41 @@ export const fetchMessages = async (
     if (!chatId) return dispatch(uiActions.setMessages([]));
     const messages = await requestMessages(chatId);
     dispatch(uiActions.setMessages(messages));
+  } catch {
+    showErrorNotification(
+      `Ошибка при получении сообщений для чата – ${chatId}`
+    );
+  } finally {
+    dispatch(uiActions.setRequestFinished("messages"));
+  }
+};
+
+export const fetchSendMessage = async (
+  dispatch: AppDispatch,
+  question: string,
+  chatId: string | null = null
+) => {
+  dispatch(
+    uiActions.setMessages([
+      {
+        id: "0",
+        message: question,
+        role: "user",
+        createdAt: new Date(),
+      },
+    ])
+  );
+  dispatch(uiActions.setRequestStarted("message"));
+  try {
+    const answer = await requestSendMessage(question, chatId);
+    dispatch(
+      uiActions.addMessage({
+        message: answer.message,
+        id: String(Math.random() * 1000000),
+        role: "asistant",
+        createdAt: new Date(),
+      })
+    );
   } catch {
     showErrorNotification(
       `Ошибка при получении сообщений для чата – ${chatId}`

@@ -14,6 +14,9 @@ const uiSlice = createSlice({
     setMessages(state, { payload }: PayloadAction<Message[]>) {
       state.messages = payload;
     },
+    addMessage(state, { payload }: PayloadAction<Message>) {
+      state.messages = [...state.messages, payload];
+    },
     setRequestStarted(state, { payload }: PayloadAction<string>) {
       state.requests[payload] = "pending";
     },

@@ -12,7 +12,7 @@ export type User = {
 
 export type Message = {
   id: string;
-  content: string;
+  message: string;
   role: "user" | "asistant";
   createdAt: Date;
 };

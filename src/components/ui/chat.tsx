@@ -24,9 +24,7 @@ interface ChatPropsBase {
     options?: { experimental_attachments?: FileList }
   ) => void;
   messages: Array<Message>;
-  input: string;
   className?: string;
-  handleInputChange: React.ChangeEventHandler<HTMLTextAreaElement>;
   isGenerating: boolean;
   stop?: () => void;
   onRateResponse?: (
@@ -52,8 +50,8 @@ type ChatProps = ChatPropsWithoutSuggestions | ChatPropsWithSuggestions;
 export function Chat({
   messages,
   handleSubmit,
-  input,
-  handleInputChange,
+  // input,
+  // handleInputChange,
   stop,
   isGenerating,
   append,
@@ -63,6 +61,7 @@ export function Chat({
   setMessages,
   transcribeAudio,
 }: ChatProps) {
+  const [input, handleInputChange] = useState("");
   const lastMessage = messages.at(-1);
   const isEmpty = messages.length === 0;
   const isTyping = lastMessage?.role === "user";
@@ -220,7 +219,7 @@ export function Chat({
         {({ files, setFiles }) => (
           <MessageInput
             value={input}
-            onChange={handleInputChange}
+            onChange={(e) => handleInputChange(e.target.value)}
             allowAttachments
             files={files}
             setFiles={setFiles}
