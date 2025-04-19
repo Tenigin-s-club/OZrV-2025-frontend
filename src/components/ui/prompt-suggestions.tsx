@@ -11,7 +11,12 @@ export function PromptSuggestions({
 }: PromptSuggestionsProps) {
   return (
     <div className="space-y-6">
-      <h2 className="text-center text-2xl font-bold">{label}</h2>
+      <div className="flex justify-center items-center">
+        <div className="size-20  z-[1000] ">
+          <img className="size-20 object-contain" src="/logo_fun.PNG" />
+        </div>
+        <h2 className="text-center text-2xl font-bold">{label}</h2>
+      </div>
       <div className="flex gap-6 text-sm flex-wrap max-sm:gap-3 ">
         {suggestions.map((suggestion) => (
           <button

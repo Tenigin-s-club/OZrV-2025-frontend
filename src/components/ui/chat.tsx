@@ -213,27 +213,29 @@ export function Chat({
         </ChatMessages>
       ) : null}
 
-      <Showcase />
+      <div>
+        <Showcase />
 
-      <ChatForm
-        isPending={isGenerating || isTyping}
-        handleSubmit={(e) =>
-          handleSubmit(e, input, () => handleInputChange(""))
-        }
-      >
-        {({ files, setFiles }) => (
-          <MessageInput
-            value={input}
-            onChange={(e) => handleInputChange(e.target.value)}
-            allowAttachments
-            files={files}
-            setFiles={setFiles}
-            stop={handleStop}
-            isGenerating={isGenerating}
-            transcribeAudio={transcribeAudio}
-          />
-        )}
-      </ChatForm>
+        <ChatForm
+          isPending={isGenerating || isTyping}
+          handleSubmit={(e) =>
+            handleSubmit(e, input, () => handleInputChange(""))
+          }
+        >
+          {({ files, setFiles }) => (
+            <MessageInput
+              value={input}
+              onChange={(e) => handleInputChange(e.target.value)}
+              allowAttachments
+              files={files}
+              setFiles={setFiles}
+              stop={handleStop}
+              isGenerating={isGenerating}
+              transcribeAudio={transcribeAudio}
+            />
+          )}
+        </ChatForm>
+      </div>
     </ChatContainer>
   );
 }

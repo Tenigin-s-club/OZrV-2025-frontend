@@ -11,8 +11,8 @@ function App() {
     <>
       <Dialog>
         <DialogTrigger>
-          <Button className="fixed z-[1000] bottom-10 right-10 ">
-            ОТКРЫТЬ ЧАТ
+          <Button className="fixed shadow-2xl size-16 p-3 z-[1000] bottom-10 right-10 ">
+            <img className="size-10 object-contain" src="/logo_fun.PNG" />
           </Button>
         </DialogTrigger>
         <DialogContent className="f-full w-full">

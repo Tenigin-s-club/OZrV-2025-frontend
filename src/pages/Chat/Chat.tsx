@@ -150,7 +150,7 @@ export function ChatBot(props: ChatDemoProps) {
         {requests["messages"] !== "pending" &&
           requests["chats"] !== "pending" && (
             <Chat
-              className="grow"
+              className="grow flex flex-col justify-between"
               messages={messages.map(({ id, role, message }) => ({
                 id,
                 role,
