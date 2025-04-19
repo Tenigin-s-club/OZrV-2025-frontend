@@ -7,6 +7,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import { uiActions, uiSelectors } from "@/store/ui";
@@ -24,6 +25,7 @@ export function AppSidebar() {
   const user = useSelector(uiSelectors.getUser);
   const requests = useSelector(uiSelectors.getRequests);
   const chats = useSelector(uiSelectors.getChats);
+  const ctx = useSidebar();
   return (
     <Sidebar>
       <SidebarContent className="p-4">
@@ -32,7 +34,10 @@ export function AppSidebar() {
           <>
             {!user && (
               <Button
-                onClick={() => dispatch(uiActions.setModalOpened("login"))}
+                onClick={() => {
+                  ctx.setOpenMobile(false);
+                  dispatch(uiActions.setModalOpened("login"));
+                }}
               >
                 Войти
               </Button>
@@ -54,7 +59,10 @@ export function AppSidebar() {
                   </p>
                 </div>
                 <Button
-                  onClick={() => fetchLogout(dispatch)}
+                  onClick={() => {
+                    ctx.setOpenMobile(false);
+                    fetchLogout(dispatch);
+                  }}
                   className="ml-auto rounded-sm size-6 p-0"
                 >
                   {requests["logout"] === "pending" ? (
@@ -74,6 +82,7 @@ export function AppSidebar() {
                       "cursor-pointer bg-[#e9e9e9] text-black border-primary border-2 hover:text-white"
                     )}
                     onClick={() => {
+                      ctx.setOpenMobile(false);
                       dispatch(uiActions.setChatOpened(null));
                       dispatch(uiActions.setMessages([]));
                     }}
@@ -84,7 +93,7 @@ export function AppSidebar() {
                       <p>Новый чат</p>
                     </span>
                   </Button>
-                  <div className="flex flex-col-reverse">
+                  <div className="flex flex-col-reverse gap-1">
                     {chats.map((item) => (
                       <SidebarMenuItem key={item.id}>
                         <SidebarMenuButton
@@ -92,12 +101,18 @@ export function AppSidebar() {
                             "cursor-pointer",
                             item.id === currentChatId ? "bg-[#e9e9e9]" : ""
                           )}
-                          onClick={() =>
-                            dispatch(uiActions.setChatOpened(item.id))
-                          }
+                          onClick={() => {
+                            dispatch(uiActions.setChatOpened(item.id));
+                            ctx.setOpenMobile(false);
+                          }}
                           asChild
                         >
-                          <span>{item.name}</span>
+                          <span
+                            className="text-ellipsis overflow-hidden line-clamp-1"
+                            style={{ display: "-webkit-inline-box" }}
+                          >
+                            {item.name}
+                          </span>
                         </SidebarMenuButton>
                       </SidebarMenuItem>
                     ))}

@@ -15,7 +15,7 @@ import { uiSelectors } from "@/store/ui";
 import { useSelector } from "react-redux";
 
 import { transcribeAudio } from "@/lib/transcribeAudio";
-import { SidebarProvider } from "../../components/ui/sidebar";
+import { SidebarProvider, SidebarTrigger } from "../../components/ui/sidebar";
 import { AppSidebar } from "../../modules/AppSidebar/AppSidebar";
 import { fetchMessages, fetchSendMessage, fetchUser } from "@/store/ui/thunks";
 import Loader from "@/components/shared/Loader/Loader";
@@ -115,7 +115,17 @@ export function ChatBot(props: ChatDemoProps) {
           "w-[60%] max-lg:w-[80%] max-md:w-[100%]"
         )}
       >
-        <div className={cn("flex", "justify-end", "mb-2", "w-full")}>
+        <div
+          className={cn(
+            "flex",
+            "justify-between md:justify-end",
+            "mb-2",
+            "w-full"
+          )}
+        >
+          <div className="md:hidden">
+            <SidebarTrigger />
+          </div>
           <div className={cn("flex", "justify-end", "mb-2")}>
             <Select value={selectedModel} onValueChange={changeLanguage}>
               <SelectTrigger className="w-fit">
