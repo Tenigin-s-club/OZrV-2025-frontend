@@ -17,6 +17,12 @@ const uiSlice = createSlice({
     addMessage(state, { payload }: PayloadAction<Message>) {
       state.messages = [...state.messages, payload];
     },
+    updateMessage(state, { payload }: PayloadAction<Message>) {
+      state.messages = [
+        ...state.messages.filter((el) => el.id !== "0"),
+        payload,
+      ];
+    },
     setRequestStarted(state, { payload }: PayloadAction<string>) {
       state.requests[payload] = "pending";
     },
@@ -37,6 +43,10 @@ const uiSlice = createSlice({
     },
     setChats(state, { payload }: PayloadAction<Chat[]>) {
       state.chats = payload;
+    },
+    addChat(state, { payload }: PayloadAction<Chat>) {
+      if (!state.chats.map((el) => el.id).includes(payload.id))
+        state.chats = [...state.chats, payload];
     },
     closeModal(state) {
       state.modalOpened = null;

@@ -73,7 +73,10 @@ export function AppSidebar() {
                     className={cx(
                       "cursor-pointer bg-[#e9e9e9] text-black border-primary border-2 hover:text-white"
                     )}
-                    onClick={() => dispatch(uiActions.setChatOpened(null))}
+                    onClick={() => {
+                      dispatch(uiActions.setChatOpened(null));
+                      dispatch(uiActions.setMessages([]));
+                    }}
                     asChild
                   >
                     <span>
@@ -81,22 +84,24 @@ export function AppSidebar() {
                       <p>Новый чат</p>
                     </span>
                   </Button>
-                  {chats.map((item) => (
-                    <SidebarMenuItem key={item.id}>
-                      <SidebarMenuButton
-                        className={cx(
-                          "cursor-pointer",
-                          item.id === currentChatId ? "bg-[#e9e9e9]" : ""
-                        )}
-                        onClick={() =>
-                          dispatch(uiActions.setChatOpened(item.id))
-                        }
-                        asChild
-                      >
-                        <span>{item.name}</span>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  ))}
+                  <div className="flex flex-col-reverse">
+                    {chats.map((item) => (
+                      <SidebarMenuItem key={item.id}>
+                        <SidebarMenuButton
+                          className={cx(
+                            "cursor-pointer",
+                            item.id === currentChatId ? "bg-[#e9e9e9]" : ""
+                          )}
+                          onClick={() =>
+                            dispatch(uiActions.setChatOpened(item.id))
+                          }
+                          asChild
+                        >
+                          <span>{item.name}</span>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    ))}
+                  </div>
                 </SidebarMenu>
               </SidebarGroupContent>
             </SidebarGroup>

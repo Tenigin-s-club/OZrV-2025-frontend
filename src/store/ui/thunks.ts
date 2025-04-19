@@ -45,7 +45,16 @@ export const fetchMessages = async (
   try {
     if (!chatId) return dispatch(uiActions.setMessages([]));
     const messages = await requestMessages(chatId);
-    dispatch(uiActions.setMessages(messages));
+    dispatch(
+      uiActions.setMessages(
+        messages.map(({ id, content, is_human, created_at }) => ({
+          id,
+          message: content,
+          role: is_human ? "user" : "asistant",
+          createdAt: new Date(created_at),
+        }))
+      )
+    );
   } catch {
     showErrorNotification(
       `Ошибка при получении сообщений для чата – ${chatId}`
@@ -58,27 +67,56 @@ export const fetchMessages = async (
 export const fetchSendMessage = async (
   dispatch: AppDispatch,
   question: string,
+  lang: string,
   chatId: string | null = null
 ) => {
+  const date = new Date();
   dispatch(
     uiActions.addMessage({
       id: "0",
       message: question,
       role: "user",
-      createdAt: new Date(),
+      createdAt: date,
     })
   );
   dispatch(uiActions.setRequestStarted("message"));
   try {
-    const answer = await requestSendMessage(question, chatId);
-    dispatch(
-      uiActions.addMessage({
-        message: answer.message,
-        id: String(Math.random() * 1000000),
-        role: "asistant",
-        createdAt: new Date(),
-      })
-    );
+    const answer = await requestSendMessage(question, lang, chatId);
+    if (answer.chat_id !== "00000000-0000-0000-0000-000000000000") {
+      dispatch(
+        uiActions.updateMessage({
+          message: question,
+          id: answer.human_message_id,
+          role: "user",
+          createdAt: date,
+        })
+      );
+      dispatch(
+        uiActions.addMessage({
+          message: answer.message,
+          id: answer.chat_message_id,
+          role: "asistant",
+          createdAt: new Date(),
+        })
+      );
+      dispatch(uiActions.setChatOpened(answer.chat_id));
+      dispatch(
+        uiActions.addChat({
+          name: question,
+          id: answer.chat_id,
+          createdAt: new Date().toISOString(),
+        })
+      );
+    } else {
+      dispatch(
+        uiActions.addMessage({
+          message: answer.message,
+          id: String(Math.random() * 1000000),
+          role: "asistant",
+          createdAt: new Date(),
+        })
+      );
+    }
   } catch {
     showErrorNotification(
       `Ошибка при получении сообщений для чата – ${chatId}`

@@ -40,7 +40,10 @@ type ChatDemoProps = {
 };
 
 export function ChatBot(props: ChatDemoProps) {
-  const [selectedModel, setSelectedModel] = useState(LANGUAGES[0].id);
+  const [selectedModel, setSelectedModel] = useState(
+    LANGUAGES.find((el) => el.id === localStorage.getItem("i18nextLng"))?.id ??
+      LANGUAGES[0].id
+  );
   const dispatch = useAppDispatch();
   const requests = useSelector(uiSelectors.getRequests);
   const messages = useSelector(uiSelectors.getMessages);
@@ -56,7 +59,7 @@ export function ChatBot(props: ChatDemoProps) {
   const append: (message: { role: "user"; content: string }) => void = (
     message
   ) => {
-    fetchSendMessage(dispatch, message.content);
+    fetchSendMessage(dispatch, message.content, selectedModel, currentChatId);
   };
 
   const handleSubmit = async (
@@ -74,7 +77,7 @@ export function ChatBot(props: ChatDemoProps) {
         "Не удалось отправить запрос, попробуйте еще раз!"
       );
     clearValue();
-    fetchSendMessage(dispatch, input);
+    fetchSendMessage(dispatch, input, selectedModel, currentChatId);
   };
 
   const currentChatId = useSelector(uiSelectors.getChatOpened);
