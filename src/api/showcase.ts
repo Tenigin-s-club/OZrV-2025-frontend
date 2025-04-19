@@ -1,6 +1,6 @@
 import { Event } from "@/store/ui/types";
 import { request } from ".";
-import { Answer, MessageServ } from "@/types";
+import { Answer } from "@/types";
 
 export const requestEvents = async (): Promise<Event[]> =>
   await request.get("/event");

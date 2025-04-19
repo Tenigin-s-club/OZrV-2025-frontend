@@ -5,7 +5,7 @@ import React, {
   useState,
   type ReactElement,
 } from "react";
-import { ArrowDown, ThumbsDown, ThumbsUp } from "lucide-react";
+import { ThumbsDown, ThumbsUp } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { useAutoScroll } from "@/hooks/use-auto-scroll";
@@ -245,13 +245,9 @@ export function ChatMessages({
 }: React.PropsWithChildren<{
   messages: Message[];
 }>) {
-  const {
-    containerRef,
-    scrollToBottom,
-    handleScroll,
-    shouldAutoScroll,
-    handleTouchStart,
-  } = useAutoScroll([messages]);
+  const { containerRef, handleScroll, handleTouchStart } = useAutoScroll([
+    messages,
+  ]);
 
   return (
     <div
@@ -272,7 +268,7 @@ export function ChatMessages({
 export const ChatContainer = forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => {
+>(({ ...props }, ref) => {
   return (
     <div
       ref={ref}

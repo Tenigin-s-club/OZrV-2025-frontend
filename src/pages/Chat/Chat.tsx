@@ -160,6 +160,7 @@ export function ChatBot(props: ChatDemoProps) {
               isGenerating={isLoading}
               stop={stop}
               append={append}
+              // @ts-ignore
               setMessages={setMessages}
               transcribeAudio={transcribeAudio}
               suggestions={[
