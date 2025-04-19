@@ -213,7 +213,6 @@ export function Chat({
       ) : null}
 
       <ChatForm
-        className="mt-auto"
         isPending={isGenerating || isTyping}
         handleSubmit={handleSubmit}
       >
