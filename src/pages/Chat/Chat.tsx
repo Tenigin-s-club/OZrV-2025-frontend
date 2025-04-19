@@ -11,11 +11,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
+
 import { useDispatch, useSelector } from "react-redux";
-import { uiActions, uiSelectors } from "@/store/ui";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { X } from "lucide-react";
+import { uiSelectors } from "@/store/ui";
+
 import { transcribeAudio } from "@/lib/transcribeAudio";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { SidebarProvider } from "../../components/ui/sidebar";

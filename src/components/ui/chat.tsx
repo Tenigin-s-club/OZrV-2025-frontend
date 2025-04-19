@@ -256,7 +256,7 @@ export function ChatMessages({
       onScroll={handleScroll}
       onTouchStart={handleTouchStart}
     >
-      <ScrollArea className="h-[70vh] rounded-md">
+      <ScrollArea className="h-[70vh] rounded-md border p-3">
         <div className="max-w-full [grid-column:1/1] [grid-row:1/1] pr-6">
           {children}
         </div>
