@@ -109,7 +109,7 @@ export function ChatBot(props: ChatDemoProps) {
       <AppSidebar />
       <div
         className={cn(
-          "flex justify-between m-auto relative z-[1000] bg-white p-8 max-md:p-0 text-[20px]",
+          "flex justify-between m-auto relative z-[1000] bg-white max-md:p-0 text-[20px]",
           "flex-col",
           "h-full",
           "w-[60%] max-lg:w-[80%] max-md:w-[100%]"

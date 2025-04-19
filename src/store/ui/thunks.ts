@@ -135,6 +135,6 @@ export const fetchEvents = async (dispatch: AppDispatch) => {
   } catch {
     showErrorNotification(`Ошибка при получении событий`);
   } finally {
-    dispatch(uiActions.setRequestFinished("messages"));
+    dispatch(uiActions.setRequestFinished("events"));
   }
 };
