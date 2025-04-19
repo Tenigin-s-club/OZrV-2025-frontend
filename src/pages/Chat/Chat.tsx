@@ -1,4 +1,4 @@
-import { CSSProperties, SyntheticEvent, useEffect, useState } from "react";
+import { CSSProperties, useEffect, useState } from "react";
 import { useChat, type UseChatOptions } from "@ai-sdk/react";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
@@ -44,7 +44,7 @@ export function ChatBot(props: ChatDemoProps) {
   const requests = useSelector(uiSelectors.getRequests);
   const messages = useSelector(uiSelectors.getMessages);
   const { t, i18n } = useTranslation();
-  const { append, stop, isLoading, setMessages } = useChat({
+  const { stop, isLoading, setMessages } = useChat({
     ...props,
     api: "/api/chat",
     body: {
@@ -52,28 +52,28 @@ export function ChatBot(props: ChatDemoProps) {
     },
   });
 
-  const handleSubmit = async (event?: React.FormEvent) => {
-    if (!event || !event.preventDefault) return;
+  const append: (message: { role: "user"; content: string }) => void = (
+    message
+  ) => {
+    fetchSendMessage(dispatch, message.content);
+  };
+
+  const handleSubmit = async (
+    event?: React.FormEvent,
+    input: string = "",
+    clearValue?: VoidFunction
+  ) => {
+    if (!event || !event.preventDefault || !input || !clearValue)
+      return showErrorNotification(
+        "Не удалось отправить запрос, попробуйте еще раз!"
+      );
     event.preventDefault();
-    console.log(event);
-    const elem =
-      // @ts-ignore
-      event.target[0];
-    if (!elem)
+    if (!input)
       return showErrorNotification(
         "Не удалось отправить запрос, попробуйте еще раз!"
       );
-    // @ts-ignore
-    const text = elem?.value;
-    if (!text)
-      return showErrorNotification(
-        "Не удалось отправить запрос, попробуйте еще раз!"
-      );
-    // @ts-ignore
-    const txt = document.getElementById("textarea-msg");
-    txt.innerText = "";
-    console.log(elem);
-    fetchSendMessage(dispatch, text);
+    clearValue();
+    fetchSendMessage(dispatch, input);
   };
 
   const currentChatId = useSelector(uiSelectors.getChatOpened);

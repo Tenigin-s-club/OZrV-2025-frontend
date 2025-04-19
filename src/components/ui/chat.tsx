@@ -1,4 +1,4 @@
-import {
+import React, {
   forwardRef,
   useCallback,
   useRef,
@@ -20,8 +20,9 @@ import { ScrollArea } from "./scroll-area";
 
 interface ChatPropsBase {
   handleSubmit: (
-    event?: { preventDefault?: () => void },
-    options?: { experimental_attachments?: FileList }
+    event?: React.FormEvent,
+    inputValue?: string,
+    clearValue?: VoidFunction
   ) => void;
   messages: Array<Message>;
   className?: string;
@@ -214,7 +215,9 @@ export function Chat({
       <ChatForm
         className="mt-auto"
         isPending={isGenerating || isTyping}
-        handleSubmit={handleSubmit}
+        handleSubmit={(e) =>
+          handleSubmit(e, input, () => handleInputChange(""))
+        }
       >
         {({ files, setFiles }) => (
           <MessageInput
@@ -297,7 +300,7 @@ interface ChatFormProps {
   className?: string;
   isPending: boolean;
   handleSubmit: (
-    event?: { preventDefault?: () => void },
+    event?: React.FormEvent,
     options?: { experimental_attachments?: FileList }
   ) => void;
   children: (props: {

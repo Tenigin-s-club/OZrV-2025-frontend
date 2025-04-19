@@ -61,14 +61,12 @@ export const fetchSendMessage = async (
   chatId: string | null = null
 ) => {
   dispatch(
-    uiActions.setMessages([
-      {
-        id: "0",
-        message: question,
-        role: "user",
-        createdAt: new Date(),
-      },
-    ])
+    uiActions.addMessage({
+      id: "0",
+      message: question,
+      role: "user",
+      createdAt: new Date(),
+    })
   );
   dispatch(uiActions.setRequestStarted("message"));
   try {
